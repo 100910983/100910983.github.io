@@ -23,3 +23,13 @@ body {
     border: 5px solid purple;
     padding: 2rem;
   }
+  .job-title {
+    color: #999999;
+    font-weight: bold;
+  }
+  
+  a:link,
+  a:visited {
+    color: #fb6542;
+  }
+  
