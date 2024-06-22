@@ -13,3 +13,13 @@ body {
     border-bottom: 10px dotted purple;
   }
   
+  h2 {
+    font-size: 1.5em;
+    font-style: italic;
+  }
+  
+  h2 + ul {
+    background-color: #eeeeee;
+    border: 5px solid purple;
+    padding: 2rem;
+  }
