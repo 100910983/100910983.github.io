@@ -180,5 +180,50 @@ Redhole.prototype.control = function () {
   };
 };
 
+let count1 = 0;
+let count2 = 0;
+let hole = new Blackhole(random(0, width), random(0, height), true);
+let hole2 = new Redhole(random(0, width), random(0, height), true);
+
+let balls = [];
+while (balls.length < 20) {
+  let size = random(10, 20);
+  let ball = new Ball(
+    random(0 + size, width - size),
+    random(0 + size, height - size),
+    random(-1, 10),
+    random(-1, 10),
+    rgb(${random(0, 255)},${random(0, 255)},${random(0, 255)}),
+    size,
+    true
+  );
+  balls.push(ball);
+}
+
+function loop() {
+  ctx.fillStyle = "rgb(0,0,0, .5)";
+  ctx.fillRect(0, 0, width, height);
+
+  for (let i = 0; i < balls.length; i++) {
+    if (balls[i].exist === true) {
+      balls[i].draw();
+      balls[i].update();
+      balls[i].collision();
+    }
+  }
+  hole.draw();
+  hole.setBound();
+  hole.collision();
+  hole.control();
+
+  hole2.draw();
+  hole2.setBound();
+  hole2.collision();
+  hole2.control();
+
+  requestAnimationFrame(loop);
+}
+loop();
+
 
   
