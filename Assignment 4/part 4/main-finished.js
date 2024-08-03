@@ -65,79 +65,63 @@ Ball.prototype.collision = function () {
   }
 };
 
+function Blackhole(x, y, velX, velY, color, size, exist) {
+  Shape.call(this, x, y, 20, 20, exist);
+  this.color = "white";
+  this.size = 15;
+}
 
-  draw() {
-    ctx.beginPath();
-    ctx.fillStyle = this.color;
-    ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
-    ctx.fill();
+Blackhole.prototype.draw = function () {
+  ctx.beginPath();
+  ctx.strokeStyle = this.color;
+  ctx.lineWidth = 3;
+  ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
+  ctx.stroke();
+};
+Blackhole.prototype.setBound = function () {
+  if (this.x + this.size >= width) {
+    this.x -= this.size;
+  } else if (this.x - this.size <= 0) {
+    this.x += this.size;
+  } else if (this.y + this.size >= height) {
+    this.y -= this.size;
+  } else if (this.y - this.size <= 0) {
+    this.y += this.size;
   }
-
-  update() {
-    if (this.x + this.size >= width) {
-      this.velX = -Math.abs(this.velX);
+};
+Blackhole.prototype.control = function () {
+  let presskey = this;
+  window.onkeypress = function (e) {
+    if (e.key === "a") {
+      presskey.x -= presskey.velX;
     }
-
-    if (this.x - this.size <= 0) {
-      this.velX = Math.abs(this.velX);
+    if (e.key === "d") {
+      presskey.x += presskey.velX;
     }
-
-    if (this.y + this.size >= height) {
-      this.velY = -Math.abs(this.velY);
+    if (e.key === "w") {
+      presskey.y -= presskey.velY;
     }
-
-    if (this.y - this.size <= 0) {
-      this.velY = Math.abs(this.velY);
+    if (e.key === "s") {
+      presskey.y += presskey.velY;
     }
+  };
+};
 
-    this.x += this.velX;
-    this.y += this.velY;
-  }
+Blackhole.prototype.collision = function () {
+  for (let k = 0; k < balls.length; k++) {
+    if (balls[k].exist === true) {
+      const dx = this.x - balls[k].x;
+      const dy = this.y - balls[k].y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
 
-  collisionDetect() {
-    for (const ball of balls) {
-      if (!(this === ball)) {
-        const dx = this.x - ball.x;
-        const dy = this.y - ball.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-
-        if (distance < this.size + ball.size) {
-          ball.color = this.color = randomRGB();
-        }
+      if (distance < this.size + balls[k].size) {
+        balls[k].exist = false;
+        count1++;
+        para1.textContent = "Player 1 ball count: " + count1;
       }
     }
   }
-}
+};
 
-const balls = [];
 
-while (balls.length < 25) {
-  const size = random(10, 20);
-  const ball = new Ball(
-    // ball position always drawn at least one ball width
-    // away from the edge of the canvas, to avoid drawing errors
-    random(0 + size, width - size),
-    random(0 + size, height - size),
-    random(-7, 7),
-    random(-7, 7),
-    randomRGB(),
-    size
-  );
-
-  balls.push(ball);
-}
-
-function loop() {
-  ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
-  ctx.fillRect(0, 0, width, height);
-
-  for (const ball of balls) {
-    ball.draw();
-    ball.update();
-    ball.collisionDetect();
-  }
-
-  requestAnimationFrame(loop);
-}
-
-loop();
+  
