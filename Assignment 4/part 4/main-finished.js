@@ -196,7 +196,7 @@ while (balls.length < 20) {
     random(0 + size, height - size),
     random(-1, 10),
     random(-1, 10),
-    rgb(${random(0, 255)},${random(0, 255)},${random(0, 255)}),
+   `rgb(${random(0, 255)},${random(0, 255)},${random(0, 255)})`,
     size,
     true
   );
